@@ -27,9 +27,25 @@ repositories {
     mavenCentral()
 }
 
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "io.ktor:ktor-server-netty:$ktor_version"
     implementation "ch.qos.logback:logback-classic:$logback_version"
+
+    // Gson
+    implementation "io.ktor:ktor-gson:$ktor_version"
+
+    // Koin
+    implementation "io.insert-koin:koin-ktor:$koin_version"
+    // SLF4J Logger
+    implementation "io.insert-koin:koin-logger-slf4j:$koin_version"
+
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
 }
