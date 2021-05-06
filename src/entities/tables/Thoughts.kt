@@ -6,9 +6,10 @@ import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
 
 object Thoughts : Table() {
-    val id: Column<Int> = integer("id").autoIncrement()
+    val id: Column<String> = varchar("id", 50)
     val title: Column<String> = varchar("title", 100)
     val content: Column<String> = varchar("content", 500)
+    val date: Column<Long> = long("date")
 
     override val primaryKey: PrimaryKey = PrimaryKey(id, name = "PK_Thoughts_ID")
 
@@ -16,6 +17,7 @@ object Thoughts : Table() {
         Thought(
             id = row[id],
             title = row[title],
-            content = row[content]
+            content = row[content],
+            date = row[date]
         )
 }
