@@ -34,34 +34,18 @@ class H2Repository : MainRepository {
         else null
     }
 
-    // Todo: Needs fixing
-    override suspend fun removeThought(id: Int): Boolean {
-        val existingThought: Thought? = Thoughts.select { Thoughts.id eq id }
-            .mapNotNull { Thoughts.toThought(it) }
-            .singleOrNull()
+    override suspend fun removeThought(id: Int): Boolean = dbQuery {
+        val deletedRows: Int = Thoughts.deleteWhere { Thoughts.id eq id }
 
-        if (existingThought != null)
-            throw IllegalArgumentException("No thought found for id: $id")
-
-        return dbQuery {
-            Thoughts.deleteWhere { Thoughts.id eq id } > 0
-        }
+        deletedRows > 0
     }
 
-    // Todo: Needs fixing
-    override suspend fun updateThought(id: Int, thought: Thought): Boolean {
-        val existingThought: Thought? = Thoughts.select { Thoughts.id eq id }
-            .mapNotNull { Thoughts.toThought(it) }
-            .singleOrNull()
+    override suspend fun updateThought(id: Int, thought: Thought): Boolean = dbQuery {
+        val updatedRows: Int = Thoughts.update({ Thoughts.id eq id }) {
+            it[title] = thought.title
+            it[content] = thought.content
+        }
 
-        if (existingThought != null)
-            throw IllegalArgumentException("No thought found for id: $id")
-
-        return dbQuery {
-            Thoughts.update({ Thoughts.id eq id }) {
-                it[title] = thought.title
-                it[content] = thought.content
-            }
-        } > 0
+        updatedRows > 0
     }
 }

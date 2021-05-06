@@ -59,7 +59,9 @@ fun Route.thoughtsRoutes() {
             val receivedThought: Thought = call.receive()
             val thought: Thought? = addThought.invoke(receivedThought)
 
-            call.respond(thought!!)
+            thought
+                ?.let { call.respond(it) }
+                ?: call.respond(HttpStatusCode.BadRequest, "Cannot post yur thought. Please try again")
         }
     }
 
