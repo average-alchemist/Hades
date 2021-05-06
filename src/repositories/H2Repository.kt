@@ -1,9 +1,9 @@
 package io.aethibo.repositories
 
 import io.aethibo.entities.response.Thought
-import io.aethibo.entities.response.ThoughtDraft
+import io.aethibo.entities.request.ThoughtDraft
 import io.aethibo.entities.tables.Thoughts
-import io.aethibo.repositories.DatabaseFactory.dbQuery
+import io.aethibo.repositories.utils.DatabaseFactory.dbQuery
 import org.jetbrains.exposed.sql.*
 import java.util.*
 

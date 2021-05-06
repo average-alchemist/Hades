@@ -1,7 +1,7 @@
 package io.aethibo.repositories
 
 import io.aethibo.entities.response.Thought
-import io.aethibo.entities.response.ThoughtDraft
+import io.aethibo.entities.request.ThoughtDraft
 
 interface MainRepository {
 

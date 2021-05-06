@@ -2,9 +2,7 @@ package io.aethibo
 
 import io.aethibo.framework.di.repositoriesModule
 import io.aethibo.framework.di.useCasesModule
-import io.aethibo.routes.loginRoute
-import io.aethibo.routes.registerRoute
-import io.aethibo.routes.thoughtsRoutes
+import io.aethibo.routes.*
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.gson.*
@@ -32,7 +30,12 @@ fun Application.module(testing: Boolean = false) {
     install(Routing) {
         loginRoute()
         registerRoute()
-        thoughtsRoutes()
+        home()
+        thoughts()
+        thought()
+        addThought()
+        updateThought()
+        deleteThought()
     }
 
     install(Koin) {
@@ -40,4 +43,3 @@ fun Application.module(testing: Boolean = false) {
         modules(repositoriesModule, useCasesModule)
     }
 }
-

@@ -1,6 +1,6 @@
 package io.aethibo.usecases
 
-import io.aethibo.entities.response.ThoughtDraft
+import io.aethibo.entities.request.ThoughtDraft
 import io.aethibo.repositories.MainRepository
 
 interface UpdateThoughtUseCase {

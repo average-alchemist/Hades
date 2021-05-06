@@ -1,4 +1,4 @@
-package io.aethibo.repositories
+package io.aethibo.repositories.utils
 
 import io.aethibo.entities.tables.Thoughts
 import kotlinx.coroutines.Dispatchers
