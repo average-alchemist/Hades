@@ -37,7 +37,7 @@ fun Route.thoughtsRoutes() {
      */
     route("/thoughts/{id}") {
         get {
-            val id: String? = call.parameters["id"]
+            val id: Int? = call.parameters["id"]?.toIntOrNull()
 
             if (id == null) {
                 call.respond(HttpStatusCode.BadRequest, "Id parameter must not be empty")
@@ -57,9 +57,9 @@ fun Route.thoughtsRoutes() {
     route("/thoughts") {
         post {
             val receivedThought: Thought = call.receive()
-            val thought: Thought = addThought.invoke(receivedThought)
+            val thought: Thought? = addThought.invoke(receivedThought)
 
-            call.respond(thought)
+            call.respond(thought!!)
         }
     }
 
@@ -68,7 +68,7 @@ fun Route.thoughtsRoutes() {
      */
     route("/thoughts/{id}") {
         put {
-            val id: String? = call.parameters["id"]
+            val id: Int? = call.parameters["id"]?.toIntOrNull()
             val receivedThought: Thought = call.receive()
 
             if (id == null) {
@@ -88,7 +88,7 @@ fun Route.thoughtsRoutes() {
      */
     route("/thoughts/{id}") {
         delete {
-            val id: String? = call.parameters["id"]
+            val id: Int? = call.parameters["id"]?.toIntOrNull()
 
             if (id == null) {
                 call.respond(HttpStatusCode.BadRequest, "Id parameter must not be empty")

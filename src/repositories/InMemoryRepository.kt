@@ -30,7 +30,7 @@ class InMemoryRepository : MainRepository {
 
     override suspend fun getAllThoughts(): List<Thought> = thoughts
 
-    override suspend fun getThought(id: String): Thought? = thoughts.firstOrNull { it.id == id }
+    override suspend fun getThought(id: Int): Thought? = thoughts.firstOrNull { it.id == id }
 
     override suspend fun addThought(draft: Thought): Thought {
 
@@ -44,9 +44,9 @@ class InMemoryRepository : MainRepository {
         return thought
     }
 
-    override suspend fun removeThought(id: String): Boolean = thoughts.removeIf { it.id == id }
+    override suspend fun removeThought(id: Int): Boolean = thoughts.removeIf { it.id == id }
 
-    override suspend fun updateThought(id: String, thought: Thought): Boolean {
+    override suspend fun updateThought(id: Int, thought: Thought): Boolean {
 
         val existingThought = thoughts.firstOrNull { it.id == id } ?: return false
 
