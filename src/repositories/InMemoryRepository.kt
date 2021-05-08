@@ -1,7 +1,8 @@
 package io.aethibo.repositories
 
-import io.aethibo.entities.response.Thought
 import io.aethibo.entities.request.ThoughtDraft
+import io.aethibo.entities.response.Thought
+import io.aethibo.entities.response.User
 import java.util.*
 
 class InMemoryRepository : MainRepository {
@@ -54,6 +55,10 @@ class InMemoryRepository : MainRepository {
         )
     )
 
+    private val users: MutableList<User> = mutableListOf(
+        User("gksčk123", "john@doe.com", "John Doe", "as123e+socvsške12e")
+    )
+
     override suspend fun getAllThoughts(): List<Thought> = thoughts
 
     override suspend fun getThought(id: String): Thought? = thoughts.firstOrNull { it.id == id }
@@ -82,5 +87,21 @@ class InMemoryRepository : MainRepository {
         existingThought.content = draft.content
 
         return true
+    }
+
+    override suspend fun addUser(user: User): User? {
+        val newUser = User(user.id, user.email, user.displayName, user.passwordHash)
+
+        users.add(newUser)
+
+        return newUser
+    }
+
+    override suspend fun getUserById(userId: String): User? {
+        return User("user#1", "john@doe.com", "John Doe", "j2wje312edlknčl20sfdd")
+    }
+
+    override suspend fun user(userId: String, hash: String?): User? {
+        return User("user#1", "john@doe.com", "John Doe", "j2wje312edlknčl20sfdd")
     }
 }

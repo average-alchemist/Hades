@@ -1,9 +1,13 @@
 package io.aethibo.repositories
 
-import io.aethibo.entities.response.Thought
 import io.aethibo.entities.request.ThoughtDraft
+import io.aethibo.entities.response.Thought
+import io.aethibo.entities.response.User
 import io.aethibo.entities.tables.Thoughts
+import io.aethibo.entities.tables.Users
+import io.aethibo.entities.tables.Users.toUser
 import io.aethibo.repositories.utils.DatabaseFactory.dbQuery
+import io.aethibo.utils.hash
 import org.jetbrains.exposed.sql.*
 import java.util.*
 
@@ -11,7 +15,7 @@ import java.util.*
  * H2 repository is in memory repository
  * but it allows us to use actual data
  */
-class H2Repository : MainRepository {
+class DefaultMainRepository : MainRepository {
 
     override suspend fun getAllThoughts(): List<Thought> = dbQuery {
         Thoughts.selectAll()
@@ -51,5 +55,43 @@ class H2Repository : MainRepository {
         }
 
         updatedRows > 0
+    }
+
+    override suspend fun getUserById(userId: String): User? = dbQuery {
+        Users.select { Users.id eq userId }
+            .map { User(userId, it[Users.email], it[Users.displayName], it[Users.passwordHash]) }
+            .singleOrNull()
+    }
+
+    override suspend fun addUser(user: User): User? = dbQuery {
+        val insertUser = Users.insert {
+            it[id] = UUID.randomUUID().toString()
+            it[email] = user.email
+            it[displayName] = user.displayName
+            it[passwordHash] = hash(user.passwordHash)
+        }
+
+        val result = insertUser.resultedValues?.get(0)
+
+        if (result != null) toUser(result)
+        else null
+    }
+
+    override suspend fun user(userId: String, hash: String?): User? {
+        val user = dbQuery {
+            Users.select { Users.id eq userId }
+                .mapNotNull { toUser(it) }
+                .singleOrNull()
+        }
+
+        println("User: $user - $userId - $hash")
+
+        // TODO: Investigate
+        return when {
+            user == null -> null
+            hash == null -> user
+            user.passwordHash == hash -> user
+            else -> null
+        }
     }
 }
