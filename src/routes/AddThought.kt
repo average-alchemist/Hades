@@ -1,10 +1,11 @@
 package io.aethibo.routes
 
-import io.aethibo.entities.response.Thought
 import io.aethibo.entities.request.ThoughtDraft
+import io.aethibo.entities.response.Thought
 import io.aethibo.usecases.AddThoughtUseCase
 import io.aethibo.utils.RouteUtils.THOUGHTS
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -18,12 +19,14 @@ fun Route.addThought() {
     /**
      * Add thought
      */
-    post(THOUGHTS) {
-        val receivedThought: ThoughtDraft = call.receive()
-        val thought: Thought? = addThought.invoke(receivedThought)
+    authenticate("jwt") {
+        post(THOUGHTS) {
+            val receivedThought: ThoughtDraft = call.receive()
+            val thought: Thought? = addThought.invoke(receivedThought)
 
-        thought
-            ?.let { call.respond(it) }
-            ?: call.respond(HttpStatusCode.BadRequest, "Cannot post your thought. Please try again")
+            thought
+                ?.let { call.respond(it) }
+                ?: call.respond(HttpStatusCode.BadRequest, "Cannot post your thought. Please try again")
+        }
     }
 }

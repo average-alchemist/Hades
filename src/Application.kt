@@ -5,8 +5,8 @@ import com.auth0.jwt.interfaces.Payload
 import io.aethibo.framework.di.applicationModule
 import io.aethibo.framework.di.repositoriesModule
 import io.aethibo.framework.di.useCasesModule
-import io.aethibo.repositories.MainRepository
 import io.aethibo.routes.*
+import io.aethibo.usecases.GetUserByIdUseCase
 import io.aethibo.utils.JwtService
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -27,7 +27,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 fun Application.module(testing: Boolean = false) {
 
     val jwtService: JwtService by inject()
-    val repository: MainRepository by inject()
+    val getUser: GetUserByIdUseCase by inject()
 
     install(DefaultHeaders)
     install(CallLogging)
@@ -44,7 +44,7 @@ fun Application.module(testing: Boolean = false) {
     }
 
     install(Authentication) {
-        jwt("auth") {
+        jwt("jwt") {
             verifier(jwtService.verifier)
             realm = "thoughts app"
 
@@ -52,7 +52,7 @@ fun Application.module(testing: Boolean = false) {
                 val payload: Payload = it.payload
                 val claim: Claim = payload.getClaim("id")
                 val claimString: String = claim.asString()
-                val user = repository.getUserById(claimString)
+                val user = getUser.invoke(claimString)
 
                 user
             }
