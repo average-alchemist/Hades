@@ -61,7 +61,7 @@ fun Application.module(testing: Boolean = false) {
 
     install(Routing) {
         loginRoute(repository, jwtService)
-        registerRoute(repository)
+        registerRoute()
         home()
         thoughts()
         thought()

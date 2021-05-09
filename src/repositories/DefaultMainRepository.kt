@@ -1,5 +1,6 @@
 package io.aethibo.repositories
 
+import io.aethibo.entities.request.SignUpDraft
 import io.aethibo.entities.request.ThoughtDraft
 import io.aethibo.entities.response.Thought
 import io.aethibo.entities.response.User
@@ -63,12 +64,12 @@ class DefaultMainRepository : MainRepository {
             .singleOrNull()
     }
 
-    override suspend fun addUser(user: User): User? = dbQuery {
+    override suspend fun createUser(draft: SignUpDraft): User? = dbQuery {
         val insertUser = Users.insert {
             it[id] = UUID.randomUUID().toString()
-            it[email] = user.email
-            it[displayName] = user.displayName
-            it[passwordHash] = hash(user.passwordHash)
+            it[email] = draft.email
+            it[displayName] = draft.displayName
+            it[passwordHash] = hash(draft.password)
         }
 
         val result = insertUser.resultedValues?.get(0)
@@ -84,9 +85,6 @@ class DefaultMainRepository : MainRepository {
                 .singleOrNull()
         }
 
-        println("User: $user - $userId - $hash")
-
-        // TODO: Investigate
         return when {
             user == null -> null
             hash == null -> user

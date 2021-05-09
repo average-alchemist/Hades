@@ -1,8 +1,10 @@
 package io.aethibo.repositories
 
+import io.aethibo.entities.request.SignUpDraft
 import io.aethibo.entities.request.ThoughtDraft
 import io.aethibo.entities.response.Thought
 import io.aethibo.entities.response.User
+import io.aethibo.utils.hash
 import java.util.*
 
 class InMemoryRepository : MainRepository {
@@ -89,8 +91,8 @@ class InMemoryRepository : MainRepository {
         return true
     }
 
-    override suspend fun addUser(user: User): User? {
-        val newUser = User(user.id, user.email, user.displayName, user.passwordHash)
+    override suspend fun createUser(draft: SignUpDraft): User? {
+        val newUser = User(UUID.randomUUID().toString(), draft.email, draft.displayName, hash(draft.password))
 
         users.add(newUser)
 

@@ -1,29 +1,28 @@
 package io.aethibo.routes
 
+import io.aethibo.entities.request.SignUpDraft
 import io.aethibo.entities.response.User
-import io.aethibo.repositories.MainRepository
+import io.aethibo.usecases.SignUpUserUseCase
 import io.aethibo.utils.RouteUtils.Register
-import io.aethibo.utils.hash
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.locations.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import org.koin.ktor.ext.inject
 
 @KtorExperimentalLocationsAPI
-fun Route.registerRoute(repository: MainRepository) {
+fun Route.registerRoute() {
 
+    val signUpUser: SignUpUserUseCase by inject()
+
+    /**
+     * Register/Create user profile
+     */
     post<Register> {
-        val params = call.receiveParameters()
-
-        val userId: String = params["id"].toString() ?: return@post
-        val email: String = params["email"].toString() ?: return@post
-        val displayName: String = params["displayName"].toString() ?: return@post
-        val password: String = params["password"].toString() ?: return@post
-
-        val user = User(userId, email, displayName, hash(password))
-        val saveUser: User? = repository.addUser(user)
+        val draft: SignUpDraft = call.receive()
+        val saveUser: User? = signUpUser.invoke(draft)
 
         saveUser
             ?.let { call.respond(it) }
