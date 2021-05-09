@@ -1,6 +1,7 @@
 package io.aethibo.repositories.utils
 
 import io.aethibo.entities.tables.Thoughts
+import io.aethibo.entities.tables.Users
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.Database
@@ -15,6 +16,7 @@ object DatabaseFactory {
 
         transaction {
             SchemaUtils.create(Thoughts)
+            SchemaUtils.create(Users)
         }
     }
 

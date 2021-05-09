@@ -1,7 +1,11 @@
 package io.aethibo.repositories
 
-import io.aethibo.entities.response.Thought
+import io.aethibo.entities.request.SignInDraft
+import io.aethibo.entities.request.SignUpDraft
 import io.aethibo.entities.request.ThoughtDraft
+import io.aethibo.entities.response.Thought
+import io.aethibo.entities.response.User
+import io.aethibo.utils.hash
 import java.util.*
 
 class InMemoryRepository : MainRepository {
@@ -54,6 +58,10 @@ class InMemoryRepository : MainRepository {
         )
     )
 
+    private val users: MutableList<User> = mutableListOf(
+        User("gksčk123", "john@doe.com", "John Doe", "as123e+socvsške12e")
+    )
+
     override suspend fun getAllThoughts(): List<Thought> = thoughts
 
     override suspend fun getThought(id: String): Thought? = thoughts.firstOrNull { it.id == id }
@@ -82,5 +90,21 @@ class InMemoryRepository : MainRepository {
         existingThought.content = draft.content
 
         return true
+    }
+
+    override suspend fun createUser(draft: SignUpDraft): User? {
+        val newUser = User(UUID.randomUUID().toString(), draft.email, draft.displayName, hash(draft.password))
+
+        users.add(newUser)
+
+        return newUser
+    }
+
+    override suspend fun getUserById(userId: String): User? {
+        return User("user#1", "john@doe.com", "John Doe", "j2wje312edlknčl20sfdd")
+    }
+
+    override suspend fun getUser(draft: SignInDraft): User? {
+        return User("user#1", "john@doe.com", "John Doe", "j2wje312edlknčl20sfdd")
     }
 }

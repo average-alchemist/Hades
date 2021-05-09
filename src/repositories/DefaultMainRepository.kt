@@ -1,9 +1,15 @@
 package io.aethibo.repositories
 
-import io.aethibo.entities.response.Thought
+import io.aethibo.entities.request.SignInDraft
+import io.aethibo.entities.request.SignUpDraft
 import io.aethibo.entities.request.ThoughtDraft
+import io.aethibo.entities.response.Thought
+import io.aethibo.entities.response.User
 import io.aethibo.entities.tables.Thoughts
+import io.aethibo.entities.tables.Users
+import io.aethibo.entities.tables.Users.toUser
 import io.aethibo.repositories.utils.DatabaseFactory.dbQuery
+import io.aethibo.utils.hash
 import org.jetbrains.exposed.sql.*
 import java.util.*
 
@@ -11,7 +17,7 @@ import java.util.*
  * H2 repository is in memory repository
  * but it allows us to use actual data
  */
-class H2Repository : MainRepository {
+class DefaultMainRepository : MainRepository {
 
     override suspend fun getAllThoughts(): List<Thought> = dbQuery {
         Thoughts.selectAll()
@@ -51,5 +57,40 @@ class H2Repository : MainRepository {
         }
 
         updatedRows > 0
+    }
+
+    override suspend fun getUserById(userId: String): User? = dbQuery {
+        Users.select { Users.id eq userId }
+            .map { User(userId, it[Users.email], it[Users.displayName], it[Users.passwordHash]) }
+            .singleOrNull()
+    }
+
+    override suspend fun createUser(draft: SignUpDraft): User? = dbQuery {
+        val insertUser = Users.insert {
+            it[id] = UUID.randomUUID().toString()
+            it[email] = draft.email
+            it[displayName] = draft.displayName
+            it[passwordHash] = hash(draft.password)
+        }
+
+        val result = insertUser.resultedValues?.get(0)
+
+        if (result != null) toUser(result)
+        else null
+    }
+
+    override suspend fun getUser(draft: SignInDraft): User? {
+        val user = dbQuery {
+            Users.select { Users.email eq draft.email }
+                .mapNotNull { toUser(it) }
+                .singleOrNull()
+        }
+
+        return when {
+            user == null -> null
+            draft.passwordHash == null -> user
+            user.passwordHash == draft.passwordHash -> user
+            else -> null
+        }
     }
 }
