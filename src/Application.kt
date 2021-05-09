@@ -15,11 +15,23 @@ import io.ktor.features.*
 import io.ktor.gson.*
 import io.ktor.locations.*
 import io.ktor.routing.*
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
 import org.koin.ktor.ext.Koin
 import org.koin.ktor.ext.inject
 import org.koin.logger.SLF4JLogger
 
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+// fun main(args: Array<String>): Unit = EngineMain.main(args)
+
+@KtorExperimentalLocationsAPI
+fun main(args: Array<String>) {
+    embeddedServer(
+        Netty,
+        watchPaths = listOf("Hades"),
+        module = Application::module,
+        port = 8080
+    ).start(wait = true)
+}
 
 @KtorExperimentalLocationsAPI
 @Suppress("unused") // Referenced in application.conf
