@@ -18,4 +18,5 @@ val useCasesModule = module(createdAtStart = true) {
      * User use cases
      */
     single<SignUpUserUseCase> { SignUpUserUseCaseImpl(get()) }
+    single<SignInUserUseCase> { SignInUserUseCaseImpl(get()) }
 }

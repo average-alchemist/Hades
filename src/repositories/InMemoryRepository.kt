@@ -1,5 +1,6 @@
 package io.aethibo.repositories
 
+import io.aethibo.entities.request.SignInDraft
 import io.aethibo.entities.request.SignUpDraft
 import io.aethibo.entities.request.ThoughtDraft
 import io.aethibo.entities.response.Thought
@@ -103,7 +104,7 @@ class InMemoryRepository : MainRepository {
         return User("user#1", "john@doe.com", "John Doe", "j2wje312edlknčl20sfdd")
     }
 
-    override suspend fun user(userId: String, hash: String?): User? {
+    override suspend fun getUser(draft: SignInDraft): User? {
         return User("user#1", "john@doe.com", "John Doe", "j2wje312edlknčl20sfdd")
     }
 }

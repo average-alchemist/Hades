@@ -1,5 +1,6 @@
 package io.aethibo.repositories
 
+import io.aethibo.entities.request.SignInDraft
 import io.aethibo.entities.request.SignUpDraft
 import io.aethibo.entities.request.ThoughtDraft
 import io.aethibo.entities.response.Thought
@@ -78,17 +79,17 @@ class DefaultMainRepository : MainRepository {
         else null
     }
 
-    override suspend fun user(userId: String, hash: String?): User? {
+    override suspend fun getUser(draft: SignInDraft): User? {
         val user = dbQuery {
-            Users.select { Users.id eq userId }
+            Users.select { Users.email eq draft.email }
                 .mapNotNull { toUser(it) }
                 .singleOrNull()
         }
 
         return when {
             user == null -> null
-            hash == null -> user
-            user.passwordHash == hash -> user
+            draft.passwordHash == null -> user
+            user.passwordHash == draft.passwordHash -> user
             else -> null
         }
     }

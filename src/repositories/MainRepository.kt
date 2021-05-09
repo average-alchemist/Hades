@@ -1,5 +1,6 @@
 package io.aethibo.repositories
 
+import io.aethibo.entities.request.SignInDraft
 import io.aethibo.entities.request.SignUpDraft
 import io.aethibo.entities.request.ThoughtDraft
 import io.aethibo.entities.response.Thought
@@ -15,5 +16,5 @@ interface MainRepository {
 
     suspend fun createUser(draft: SignUpDraft): User?
     suspend fun getUserById(userId: String): User?
-    suspend fun user(userId: String, hash: String? = null): User?
+    suspend fun getUser(draft: SignInDraft): User?
 }
