@@ -3,7 +3,7 @@ version: "3.6"
 services:
   app:
     build: ./
-    container_name: gradle-app
+    container_name: thoughts-app
     volumes:
       - ./:/Hades
     ports:
@@ -12,7 +12,7 @@ services:
       - 8080
     networks:
       - thoughts-network
-    depends:
+    depends_on:
       - database
 
   database:
