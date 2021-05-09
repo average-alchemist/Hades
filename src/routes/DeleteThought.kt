@@ -1,6 +1,5 @@
 package io.aethibo.routes
 
-import io.aethibo.usecases.GetUserByIdUseCase
 import io.aethibo.usecases.RemoveThoughtUseCase
 import io.aethibo.utils.RouteUtils
 import io.ktor.application.*
@@ -12,7 +11,6 @@ import org.koin.ktor.ext.inject
 
 fun Route.deleteThought() {
 
-    val getUser: GetUserByIdUseCase by inject()
     val removeThought: RemoveThoughtUseCase by inject()
 
     /**
