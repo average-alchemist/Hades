@@ -29,9 +29,9 @@ fun Route.loginRoute(service: JwtService) {
 
         val user = signInUser.invoke(draft)
 
-        if (user != null) {
+        user?.let {
             val token = service.generateToken(user)
             call.respond(LoginResponse("Bearer", token))
-        } else call.respond(HttpStatusCode.BadRequest, "Cannot sign in into this account. Please try again.")
+        } ?: call.respond(HttpStatusCode.BadRequest, "Cannot sign in into this account. Please try again.")
     }
 }

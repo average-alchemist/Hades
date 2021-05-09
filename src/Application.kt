@@ -33,9 +33,7 @@ fun Application.module(testing: Boolean = false) {
     install(CallLogging)
     install(Locations)
     install(ContentNegotiation) {
-        gson {
-            setPrettyPrinting()
-        }
+        gson { setPrettyPrinting() }
     }
 
     install(Koin) {
