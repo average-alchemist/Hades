@@ -22,6 +22,7 @@ use `single<MainRepository> { InMemoryRepository() }` instead of `single<MainRep
 - [Hikari](https://github.com/brettwooldridge/HikariCP) - HikariCP is a "zero-overhead" production ready JDBC connection pool.
 - [PostgreSQL](https://github.com/postgres/postgres) - PostgreSQL is an advanced object-relational database management syste.
 - [Locations]() - Type-safe routes.
+- Also contains JWT authentication.
 
 ## Database
 
@@ -73,4 +74,16 @@ In case of PostgreSQL, there's bit of a setup although major work is in place al
   - Wait until it's done (you'll see line: "Waiting for changes...")
 6. Test via Postman
 
+If all done correctly, you'll should see two containers created in docker, as well as your terminal windows being updated as you work with postman to test the data.
+
+## Contribute
+
+If you want to contribute to this repository, you're always welcome!
+
+## Contact
+
+If you need any help, feel free to contact me: kenan.karic@outlook.com.
+
+## License
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
