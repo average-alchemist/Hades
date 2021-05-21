@@ -1,7 +1,5 @@
 package io.aethibo.repositories.utils
 
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.HikariDataSource
 import io.aethibo.entities.tables.Thoughts
 import io.aethibo.entities.tables.Users
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +12,7 @@ object DatabaseFactory {
 
     init {
         // In memory / keep alive between connections/transactions
-        // Database.connect("jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;", "org.h2.Driver")
+        Database.connect("jdbc:h2:mem:regular;DB_CLOSE_DELAY=-1;", "org.h2.Driver")
 
         // PostgreSQL
         /*Database.connect(
@@ -27,7 +25,7 @@ object DatabaseFactory {
         /**
          * Hikari setup - with connection pooling
          */
-        val config = HikariConfig().apply {
+        /* val config = HikariConfig().apply {
             jdbcUrl = "jdbc:postgresql://database:5432/thoughtsDb"
             driverClassName = "org.postgresql.Driver"
             username = "username"
@@ -36,7 +34,7 @@ object DatabaseFactory {
         }
 
         val dataSource = HikariDataSource(config)
-        Database.connect(dataSource)
+        Database.connect(dataSource)*/
 
         transaction {
             SchemaUtils.create(Thoughts)

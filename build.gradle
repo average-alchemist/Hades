@@ -55,7 +55,7 @@ dependencies {
     // Postgres database (persistence)
     implementation "org.postgresql:postgresql:$postgresql_version"
 
-    // Exposed - (local storage)
+    // Exposed - (sql library)
     implementation "org.jetbrains.exposed:exposed-core:$exposed_version"
     implementation "org.jetbrains.exposed:exposed-jdbc:$exposed_version"
 
@@ -67,9 +67,6 @@ dependencies {
 
     // Auth - JWT
     implementation "io.ktor:ktor-auth-jwt:$ktor_version"
-
-    // GraphQl
-    implementation "com.apurebase:kgraphql:$kgraphql_version"
 
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
 }
