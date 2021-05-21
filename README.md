@@ -10,6 +10,8 @@ Clone the project and run it. Simple as that.
 By default it uses H2 database while working with Exposed to store data, but if you prefer to use InMemory one then in framework package, under di, 
 use `single<MainRepository> { InMemoryRepository() }` instead of `single<MainRepository> { DefaultMainRepository() }` in RepositoriesModule.
 
+> All endpoints aside from authentication will contain API version: "http://localhost:8080/api/v1/..."
+
 ## Built with
 
 - [Kotlin](https://kotlinlang.org/) - Kotlin is a cross-platform, statically typed, general-purpose programming language with type inference.
