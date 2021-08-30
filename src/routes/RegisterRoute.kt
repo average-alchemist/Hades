@@ -3,7 +3,7 @@ package io.aethibo.routes
 import io.aethibo.entities.request.SignUpDraft
 import io.aethibo.entities.response.User
 import io.aethibo.usecases.SignUpUserUseCase
-import io.aethibo.utils.RouteUtils.Register
+import io.aethibo.utils.RouteUtils
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.locations.*
@@ -20,7 +20,7 @@ fun Route.registerRoute() {
     /**
      * Register/Create user profile
      */
-    post<Register> {
+    post(RouteUtils.REGISTER) {
         val draft: SignUpDraft = call.receive()
         val saveUser: User? = signUpUser.invoke(draft)
 

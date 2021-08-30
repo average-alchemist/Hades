@@ -4,7 +4,7 @@ import io.aethibo.entities.request.SignInDraft
 import io.aethibo.entities.response.LoginResponse
 import io.aethibo.usecases.SignInUserUseCase
 import io.aethibo.utils.JwtService
-import io.aethibo.utils.RouteUtils.Login
+import io.aethibo.utils.RouteUtils
 import io.aethibo.utils.hash
 import io.ktor.application.*
 import io.ktor.http.*
@@ -19,7 +19,7 @@ fun Route.loginRoute(service: JwtService) {
 
     val signInUser: SignInUserUseCase by inject()
 
-    post<Login> {
+    post(RouteUtils.LOGIN) {
         val params = call.receiveParameters()
 
         val email = params["email"] ?: return@post
